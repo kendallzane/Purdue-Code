@@ -1,0 +1,7 @@
+my project correctly implements everything up to 3.10, and 3.15
+
+it does not have edit mode, history, subshells, path completion, .shellrc, or Ctrl-Z implemented
+
+the only real "extra" feature is the shell prompt resembling that of zsh, where it uses some color and prints out relavant ENV variables
+
+./testall should give 90 points, everything but the subshell part

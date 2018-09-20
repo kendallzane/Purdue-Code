@@ -1,0 +1,8 @@
+8c8
+< FreeList: [offset:737224,size:1359864]->[offset:0,size:2097088]->
+---
+> FreeList: [offset:0,size:2097088]->
+10c10
+< FreeList: [offset:0,size:2096952]->
+---
+> FreeList: [offset:0,size:737088]->

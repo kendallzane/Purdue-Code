@@ -1,0 +1,27 @@
+total 360
+drwxr-s--- 4 bowlesk bowlesk  4096 Jul 17 03:19 .
+drwxr-s--- 5 bowlesk bowlesk  4096 Jul  5 13:13 ..
+drwxr-s--- 7 bowlesk bowlesk  4096 Jul 17 03:19 .git
+-rw-r----- 1 bowlesk bowlesk  3148 Jul 17 03:19 .local.git.out
+-rwxr-x--- 1 bowlesk bowlesk   798 Jul  5 13:13 Makefile
+-rwxr-x--- 1 bowlesk bowlesk 20816 Jul 17 02:59 cat_grep
+-rwxr-x--- 1 bowlesk bowlesk  2927 Jul  5 13:13 cat_grep.cc
+-rwxr-x--- 1 bowlesk bowlesk  5138 Jul 17 03:19 command.cc
+-rwxr-x--- 1 bowlesk bowlesk   737 Jul  9 05:17 command.h
+-rw-r----- 1 bowlesk bowlesk 27104 Jul 17 03:19 command.o
+-rwxr-x--- 1 bowlesk bowlesk 12480 Jul 17 02:59 ctrl-c
+-rwxr-x--- 1 bowlesk bowlesk   642 Jul  5 13:13 ctrl-c.cc
+-rw-r----- 1 bowlesk bowlesk 45124 Jul 17 02:57 lex.yy.c
+-rw-r----- 1 bowlesk bowlesk 43480 Jul 17 02:57 lex.yy.o
+-rw------- 1 bowlesk bowlesk     0 Jul 17 03:20 out
+-rwxr-x--- 1 bowlesk bowlesk 15736 Jul 17 02:59 regular
+-rwxr-x--- 1 bowlesk bowlesk  1747 Jul  5 13:13 regular.cc
+-rwxr-x--- 1 bowlesk bowlesk 56928 Jul 17 03:19 shell
+-rwxr-x--- 1 bowlesk bowlesk   664 Jul 10 13:30 shell.l
+-rwxr-x--- 1 bowlesk bowlesk  2570 Jul 17 03:17 shell.y
+drwxr-s--- 3 bowlesk bowlesk  4096 Jul  5 13:13 test-shell
+-rw-r----- 1 bowlesk bowlesk 47863 Jul 17 03:18 y.tab.c
+-rw-r----- 1 bowlesk bowlesk  2587 Jul 17 03:18 y.tab.h
+-rw-r----- 1 bowlesk bowlesk 18328 Jul 17 03:18 y.tab.o
+grep: ssss: No such file or directory
+grep: dfdffdf: No such file or directory

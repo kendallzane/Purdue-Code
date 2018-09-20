@@ -1,0 +1,311 @@
+ 
+/*
+ *
+ * CS-252 Fall 2013
+ * shell.l: lexical analyzer for shell
+ * You have to extend it.
+ *
+ */
+
+%{
+
+#include <string.h>
+#include "y.tab.h"
+#include <unistd.h>
+#include <pwd.h>
+
+
+
+static  void yyunput (int c,char *buf_ptr  );
+
+void myunputc(int c) {
+    unput(c);
+}
+
+////////////  Start added code ///////////
+/*
+extern "C" char * read_line();
+int mygetc(FILE * f) {
+static char *p;
+char ch;
+if (!isatty(0)) {
+  // stdin is not a tty. Call real getc
+  return getc(f);
+}
+// stdin is a tty. Call our read_line.
+if (p==NULL || *p == 0) {
+  char * s = read_line();
+  p = s;
+}
+ch = *p;
+p++;
+return ch;
+}
+#undef getc
+#define getc(f) mygetc(f)
+*/
+/////////// End added code ///////////
+
+
+%}
+
+%%
+
+\n 	{
+		return NEWLINE;
+	}
+
+[ \t] 	{
+		/* Discard spaces and tabs */
+     	}	
+
+">" {
+		return GREAT;
+	}
+
+">>" {
+		return GREATGREAT;
+	}
+
+">>&" {
+		return GREATGREATAMPERSAND;
+	}
+
+">&" {
+		return GREATAMPERSAND;
+}
+
+"<" {
+		return LESS; 
+}
+
+"|"	{
+		return PIPE;
+	}
+
+"&"	{
+		return AMPERSAND;
+	}
+
+\"[^\n\"]*\" { 
+		//capture: quotes, (anything but quotes)*, quotes
+		yytext = (char*)(yytext+1);
+		yytext[strlen(yytext) - 1 ] = 0;
+		
+		yylval.string_val = strdup(yytext);
+		
+		return WORD;
+	}
+	
+\'[^\n\']*\' { 
+		//capture: ticks, (anything but ticks)*, ticks
+		
+		/*
+		yytext = (char*)(yytext+1);
+		yytext[strlen(yytext) - 1 ] = 0;
+		
+		int tempin = dup(0);
+		int tempout = dup(1);
+		
+		int fdpipe[2];
+		int fdpipe2[2];
+		
+		pipe(fdpipe);
+		pipe(fdpipe2);
+		
+		fdout = fdpipe[1];
+		dup2(fdout, 1);
+		close(fdout);
+		
+		int ret = fork();
+		
+		if (ret == 0) {
+			//child process
+			
+			write(fdpipe2[1], yytext, strlen(yytext));
+			
+			dup2(fdpipe[0], 0);
+			dup2(fdpipe2[1], 1);
+			
+			close(fdpipe[0]);
+			close(fdpipe2[1]);
+			
+			
+			
+		} else {
+			//parent process
+			waitpid(ret, NULL, 0);
+			
+			close(fdpipe[1]);
+			
+			
+		}
+		*/
+	}
+	
+([^ \&\>\<\\\|\t\n]|(\\\|)|(\\\<)|(\\\>)|(\\\&)|(\\))([^ \&\>\<\\\|\t\n]|(\\\|)|(\\\<)|(\\\>)|(\\\&)|(\\))*  {
+		
+		//that regex chooses to ignore &<>| characters, unless they are preceeded by a \
+		
+		// I probably shouldn't be doing all of this here
+		// but OH WELL
+		
+		if (strchr(yytext, '\\') || strchr(yytext, '$') || strchr(yytext, '~')) {
+			//account for escapes, if they exist
+			int length = strlen(yytext);
+			char * nav = strdup(yytext);
+			char * stringWithEscapes = (char *)malloc(sizeof(char *) * 2 * length);
+			
+			int stringPos = 0;
+			//int numEscapes = 0;
+			for (int i = 0; i < length; i++) {
+				//printf("observing character: %c\n", nav[i]);
+				
+				if (nav[i] == '~') {
+					char * home = (char *)malloc(sizeof(char *) * 10 * length);
+					int homeNav = i+1;
+					int homePos = 0;
+					
+					int found = 0;
+					struct passwd *p;
+					
+					if (i + 1 >= length || nav[i + 1] == '/') {
+						p = getpwnam(getenv("USER"));
+						if (p != NULL) {
+							sprintf(home, "%s", p->pw_dir);
+							found = 1;
+						} else {
+							//perror("getpwnam() error");
+						}
+					} else {
+						char * name = (char *)malloc(sizeof(char *) * 10 * length);
+						while (homeNav < length && nav[homeNav] != '/'){
+							name[homePos] = nav[homeNav];
+							homeNav++;
+							homePos++;
+						}
+						name[homePos] = '\0';
+						//printf("name: %s\n", name);
+						p = getpwnam(name);
+						if (p != NULL) {
+							sprintf(home, "%s", p->pw_dir);
+							found = 1;
+						} else {
+							//perror("getpwnam() error");
+						}
+						
+						//printf("name: %s\n", name);
+						//printf("home: %s\n", home);
+						//sprintf(home, "/homes/%s", name);
+						free(name);
+					}
+					if (found) {
+						for (int k = 0; k < strlen(home); k++) {
+							stringWithEscapes[stringPos] = home[k];
+							stringPos++;
+						}
+						i = homeNav;
+						if (nav[i] == '/') {
+							i--;
+						}
+					} else {
+						stringWithEscapes[stringPos] = '~';
+					//i++;
+						stringPos++;
+					}
+					free(home);
+				} else if (nav[i] == '\\') {
+					//printf("found an escape!\n");
+					if (i + 1 < length && nav[i + 1] == '\\') {
+						//allow escapes for backslashes
+						//printf("escaping a backslash!\n");
+						stringWithEscapes[stringPos] = '\\';
+						i++;
+						stringPos++;
+					} else {
+						//printf("skipping ahead in string\n");
+						//i++;
+					}
+				} else if (nav[i] == '$') {
+					if (i + 2 < length && nav[i + 1] == '{') {
+						//printf("suspecting an EVE\n");
+						char * toExpand = (char *)malloc(sizeof(char *) * 10 * length);
+						
+						int expandNav = i + 2;
+						int expandPos = 0;
+						int found = 0;
+						
+						for (expandNav; expandNav < length; expandNav++) {
+							//printf("inspecting char: %c\n", nav[expandNav]);
+							if (!found) {
+								if (nav[expandNav] == '}') {
+									toExpand[expandPos] = '\0';
+									//printf("found end of expansion, will expand: %s\n", toExpand);
+									found = 1;
+								} else {
+									toExpand[expandPos] = nav[expandNav];
+									expandPos++;
+								}
+							}
+					
+						}
+						
+						
+						
+						if (!found) {
+							stringWithEscapes[stringPos] = '$';
+							stringPos++;
+						} else {
+							char *expanded = (char *)malloc(sizeof(char *) * length);
+							if (strcmp(toExpand, "$") == 0) {
+								//printf("The PID of the shell process\n");
+								sprintf(expanded, "%ld", (long) getppid());
+							} else if (strcmp(toExpand, "SHELL") == 0) {
+								//expanded = getenv("_");
+								strcpy(expanded, getenv("_"));
+							} else {
+								//expanded = getenv(toExpand);
+								strcpy(expanded, getenv(toExpand));
+							}
+							
+							if (expanded == NULL) {
+								stringWithEscapes[stringPos] = '$';
+								stringPos++;
+							} else {
+								i += expandPos + 2;
+								for (int j = 0; j < strlen(expanded); j++) {
+									stringWithEscapes[stringPos] = expanded[j];
+									stringPos++;
+								}
+							}
+							free(expanded);
+						}
+						
+						free(toExpand);
+						
+						
+					}
+					
+					
+				} else {
+					stringWithEscapes[stringPos] = nav[i];
+					//i++;
+					stringPos++;
+				}
+			}
+			
+			stringWithEscapes[stringPos] = '\0';
+			yylval.string_val = strdup(stringWithEscapes);
+			return WORD;
+			
+			
+		} else {
+			yylval.string_val = strdup(yytext);
+			return WORD;
+		}
+		
+		return WORD;
+	}
+	
+
+
