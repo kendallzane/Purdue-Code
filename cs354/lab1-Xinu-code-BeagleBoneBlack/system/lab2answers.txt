@@ -1,0 +1,25 @@
+1. An interrupt is used by an operating system (such as Xinu) to execute instructions outside of the normal process schedule.
+Interrupts are often used for dealing with I/O devices such as keyboards. They are also raised unplanned when an exception occurs
+in the execution of a function, such as a divide-by-zero error. They can also be raised by timer functions.
+
+2 - The plan would be as follows:
+
+job2 : 0
+job3 : 20
+job1 : 80
+job4 : 90
+job5 : 100
+
+Notably, altering the function in this way allows for all jobs to execute at least somewhat, which is not the case usually.
+
+3 - Each job will execute in the following order, with each quantum being 10 ms:
+
+1, 2, 3, 4, 5, 
+1, 2, 3, 4, 5, 
+3, 4, 5, 
+3, 4, 
+3, 4,
+3, 4,
+4
+
+In this case, you can obviously combine the last 2 executions into one job of quantum 20 ms.

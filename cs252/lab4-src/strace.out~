@@ -1,0 +1,14 @@
+mprotect(0x7efff5210000, 4096, PROT_READ) = 0
+munmap(0x7efff51f6000, 94840)           = 0
+write(1, "Hello World without syscall\n", 28) = 28
+	^^^^ write ^^^^^
+write(1, "Hello World with syscall\n", 25) = 25
+	^^^^ syscall ^^^^^
+fstat(1, {st_mode=S_IFCHR|0620, st_rdev=makedev(136, 2), ...}) = 0
+	^^^printf ^^^
+brk(NULL)                               = 0x1fa5000
+brk(0x1fc6000)                          = 0x1fc6000
+write(1, "Hello World with printf\n", 24) = 24
+	^^^printf ^^^
+exit_group(24)                          = ?
++++ exited with 24 +++

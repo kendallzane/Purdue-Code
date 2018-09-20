@@ -1,0 +1,9 @@
+1] 
+
+create > getattr > write
+
+2]
+
+advantage: You have full control over how the filesystem works, and can even implement some features absent or underdeveloped in a regular filesystem.
+
+disadvantage: You open yourself up to creating additional security vulnerabilities that might not have existed in the stock filesystem.

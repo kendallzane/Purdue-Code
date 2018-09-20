@@ -1,0 +1,15 @@
+Kendall Z Bowles
+BOWLESK
+
+My code should be feature complete.
+
+For the password check, the program simply works as intended.
+
+For the file backup system, I coded it to my best understanding of the criteria. The program does not check to see if a user is manually deleting backup files. There is an option to delete all of the pre-existing backups of the file in the folder upon execution of the program. Otherwise, it will assume there are none and not count those towards the number of created backups. However, if the maximum number of backups is reached, pre-existing backups will be the first to be deleted. These are all what I assume to be corner cases that aren't likely to be tested, but I figured I should make note of them.
+
+The backup program also makes many debug print statements, nothing I read makes me assume that this isn't allowed. Hopefully this doesn't interfere with your testing, otherwise they are of course easy to comment out.
+
+Emails are sent in the format:
+
+Subject: Difference found in file: [filename]
+Body: [diff]

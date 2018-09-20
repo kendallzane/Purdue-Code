@@ -1,0 +1,13 @@
+Kendall Z Bowles
+CS354 - Lab 0
+September 12th, 2017
+
+- Task 3 -
+
+Since all three processes were of the same priority, the system attempted to give each one equal time
+to execute - which meant that sometimes, priority was switched to a different process mid-print statement.
+It seems that priority was being switched while the printed string was being assembled, as the strings started
+to meld together where the strings' variables were supposed to be - creating lines that were excessively long,
+followed by a single line containg the input character. The only pattern discernable for the order in which
+the lines were executed was that no process printed twice in a row - otherwise, it was not predictable which line
+would print after another.

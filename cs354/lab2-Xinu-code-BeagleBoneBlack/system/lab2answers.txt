@@ -1,0 +1,34 @@
+KENDALL Z BOWLES
+
+-Explain how xsend and xreceive are O(1) operations-
+
+The operation time of these functions is not proportional to the size of the array which they interact with.
+When these functions interact with the buffer, they have exact positions that they directly access.
+There aren't any looping blocks in either function, either.
+
+-Explain how sender processes block only if the receiver's buffer is completely full-
+
+The sender calculates the number of low priority and high priority messages, and adds them to see if the
+buffer is full. If it detects that it can't send, the process will enqueue itself into the recepient's 
+process queue, and will set its own state to XSEND. The scheduling system will not resume the sender
+until it is dequeued.
+
+-Explain how normal and high priority messages are stored in a single array-
+
+The simple approach is to have the low priority messages grow from the bottom of the array, and the high
+priority messages grow from the top of the array. If the high priority and low priority elements collide,
+then the array is full.
+
+-Explain how messages of equal priority are received in a LIFO order-
+
+Integer variables keep track of the number of low priority and high priority messages in the buffer.
+Messages are added sequentially to the array in order of creation. If you know how many of a message
+type are in the array, then you can easily find the "last in" message, and remove it first.
+
+-Explain how blocked sender processes are readied in the FIFO order-
+
+The XINU queue structure gives access to a simple "dequeue" function, which will remove the head of the
+queue and return it - the head will have been the oldest element in the queue, and would be the "first in".
+Then you can simply remove it.
+
+

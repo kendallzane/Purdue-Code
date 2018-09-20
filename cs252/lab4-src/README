@@ -1,0 +1,28 @@
+-PART 1-
+
+thr1.cc creates extra threads that will endlessly print out a a defined 
+character, alongside the main process thread. before modifying the file, there
+are three threads - after, five. it isn't guaranteed that the letters will be
+printed in any particular order, but all characters will be printed as soon as
+the processor can accomodate the request.
+
+in thr2.cc, the text of the file creates multiple threads, but not until after 
+the program returns from the printC command - which it simply will never do.
+
+-PART 3-
+
+kernel time | user time | real time
+
+pthread_mutex (count) - 0.00s | 0.15s | 0.43s
+spin lock (count_spin with thr_yield) - 0.12s | 0.02s | 0.125s 
+spin_lock (count_spin without thr_yield) - 0.00s | 0.12s | 0.31s 
+
+1. pthread_yield forces the program to execute more in system space in alternative
+to user space. the locked threads then run with the full power of the system and
+can return sooner. without the yield, more time is spend waiting in user space.
+
+2. using mutex locks causes the program to run in user space, while using yield
+commands causes the program to spend more time in system space.
+
+
+  

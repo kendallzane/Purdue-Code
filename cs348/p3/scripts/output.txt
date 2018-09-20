@@ -1,0 +1,192 @@
+1: LOGIN admin pass
+Login successful
+
+2: CREATE ROLE R1 ONE
+Role created successfully
+
+3: CREATE ROLE R2 TWO
+Role created successfully
+
+4: CREATE ROLE R3 THREE
+Role created successfully
+
+5: CREATE USER U1 P1
+User created successfully
+
+6: CREATE USER U2 P2
+User created successfully
+
+7: CREATE USER U3 P3
+User created successfully
+
+8: CREATE USER U4 P4
+User created successfully
+
+9: CREATE USER U5 P5
+User created successfully
+
+10: GRANT ROLE U1 R1
+Role assigned successfully
+
+11: GRANT ROLE U2 R1
+Role assigned successfully
+
+12: GRANT ROLE U3 R1
+Role assigned successfully
+
+13: GRANT ROLE U2 R2
+Role assigned successfully
+
+14: GRANT ROLE U3 R2
+Role assigned successfully
+
+15: GRANT ROLE U2 R3
+Role assigned successfully
+
+16: GRANT ROLE U4 R3
+Role assigned successfully
+
+17: GRANT PRIVILEGE INSERT TO R1 ON Suppliers
+Privilege granted successfully
+
+18: GRANT PRIVILEGE INSERT TO R2 ON Products
+Privilege granted successfully
+
+19: GRANT PRIVILEGE INSERT TO R3 ON Customers
+Privilege granted successfully
+
+20: GRANT PRIVILEGE SELECT TO R3 ON Suppliers
+Privilege granted successfully
+
+21: GRANT PRIVILEGE SELECT TO R3 ON Products
+Privilege granted successfully
+
+22: GRANT PRIVILEGE SELECT TO R3 ON Customers
+Privilege granted successfully
+
+23: GRANT PRIVILEGE SELECT TO R2 ON Suppliers
+Privilege granted successfully
+
+24: GRANT PRIVILEGE SELECT TO R2 ON Products
+Privilege granted successfully
+
+25: GRANT PRIVILEGE SELECT TO R1 ON Suppliers
+Privilege granted successfully
+
+26: LOGIN U1 PASS70
+Invalid login
+
+27: LOGIN USERR PASS70
+Invalid login
+
+28: LOGIN U1 P1
+Login successful
+
+29: CREATE ROLE RDUMMY DK
+Authorization failure
+
+30: CREATE USER U70 P70
+Authorization failure
+
+31: GRANT ROLE U70 RDUMMY
+Authorization failure
+
+32: GRANT PRIVILEGE INSERT TO RDUMMY ON Schools
+Authorization failure
+
+33: INSERT INTO Suppliers VALUES ('1', 'first 1', 'last 1', 'address 1', '1234567890') ENCRYPT 2 R1
+Row inserted successfully
+
+34: INSERT INTO Suppliers VALUES ('2', 'first 2', 'last 2', 'address 2', '2345678901') ENCRYPT 3 R1
+Row inserted successfully
+
+35: LOGIN U3 P3
+Login successful
+
+36: SELECT * FROM Suppliers
+SUPPLIERID, FIRSTNAME, LASTNAME, ADDRESS, PHONENO
+1, first 1, last 1, address 1, 1234567890
+2, first 2, last 2, address 2, 2345678901
+
+37: INSERT INTO Products VALUES ('1','product 1','category 1', '1', 'description 1') ENCRYPT 2 R2
+Row inserted successfully
+
+38: INSERT INTO Suppliers VALUES ('3', 'first 3', 'last 3', 'address 3', '3456789012') ENCRYPT 0 R1
+Row inserted successfully
+
+39: LOGIN U2 P2
+Login successful
+
+40: SELECT * FROM Suppliers
+SUPPLIERID, FIRSTNAME, LASTNAME, ADDRESS, PHONENO
+1, first 1, last 1, address 1, 1234567890
+2, first 2, last 2, address 2, 2345678901
+3, first 3, last 3, address 3, 3456789012
+
+41: SELECT * FROM Products
+PRODUCTID, PRODUCTNAME, CATEGORY, SUPPLIERID, PRODUCTDESCRIPTION
+1, product 1, category 1, 1, description 1
+
+42: INSERT INTO Customers VALUES ('1', 'first 1', 'last 1', 'location 1', '1234567890', '31') ENCRYPT 4 R3
+Row inserted successfully
+
+43: INSERT INTO Suppliers VALUES ('4', 'first 4', 'last 4', 'address 4', '4567890123') ENCRYPT 4 R1
+Row inserted successfully
+
+44: INSERT INTO Products VALUES ('2','product 2','category 2', '2', 'description 2') ENCRYPT 3 R2
+Row inserted successfully
+
+45: INSERT INTO Customers VALUES ('2', 'first 2', 'last 2', 'location 2', '2345678901', '32') ENCRYPT 2 R3
+Row inserted successfully
+
+46: LOGIN U4 P4
+Login successful
+
+47: SELECT * FROM Customers
+CUSTOMERID, FIRSTNAME, LASTNAME, ADDRESS, PHONENO, AGE
+1, first 1, last 1, location 1, 1234567890, 31
+2, first 2, last 2, location 2, 2345678901, 32
+
+48: SELECT * FROM Suppliers
+SUPPLIERID, FIRSTNAME, LASTNAME, ADDRESS, PHONENO
+
+49: SELECT * FROM Products
+PRODUCTID, PRODUCTNAME, CATEGORY, SUPPLIERID, PRODUCTDESCRIPTION
+
+50: LOGIN U1 P1
+Login successful
+
+51: INSERT INTO Products VALUES ('3','product 3','category 3', '3', 'description 3') ENCRYPT 5 R2
+Authorization failure
+
+52: INSERT INTO Customers VALUES ('3', 'first 3', 'last 3', 'location 3', '3456789012', '33') ENCRYPT 3 R3
+Authorization failure
+
+53: SELECT * FROM Products
+Authorization failure
+
+54: SELECT * FROM Customers
+Authorization failure
+
+55: LOGIN U3 P3
+Login successful
+
+56: SELECT * FROM Customers
+Authorization failure
+
+57: REVOKE PRIVILEGE SELECT FROM R3 ON Suppliers
+Authorization failure
+
+58: LOGIN admin pass
+Login successful
+
+59: REVOKE PRIVILEGE SELECT FROM R3 ON Suppliers
+Privilege revoked successfully
+
+60: LOGIN U4 P4
+Login successful
+
+61: SELECT * FROM Suppliers
+Authorization failure
+
+62: QUIT

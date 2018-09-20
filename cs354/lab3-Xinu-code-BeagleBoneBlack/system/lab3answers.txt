@@ -1,0 +1,35 @@
+1. Fragmentation is when memory is stored into a space in such a way that the amount of free space
+in the system is not used effeciently.
+
+The three main types are:
+
+External: Free memory is broken up into small chunks inbetween used memory, and becomes too small
+to accomodate requests, forcing that free memory to go to waste.
+
+Internal fragmentation: The memory allocation system designates minimum amounts of free memory that can
+be used to accomodate requests, based on the size of the request. In short, more memory is given to requests
+than necessary, forcing the leftover amounts of memory to go to waste.
+
+Data fragmentation: Data is allocated such that large files are not stored contiguously in memory. The
+scattering of this memory causes the system to do more work to jump around to access the whole file,
+leading to slower access of that file.
+
+2. For both free and used blocks in Xinu's memlist, the metadata is stored at the beginning of the memory 
+blocks.
+
+3. 
+
+nbytes == 0 ~ Allocating no memory would do nothing, so we return an error.
+nbytes < 0  ~ We obviously can't allocate negative memory. 
+nbytes > 1048576 ~ The memory list only has 1 MB total, so we don't want to allocate over that.
+nbytes > 1048576 - 16 ~ We have to make sure that the memory doesn't go out of bounds after padding in 16 bytes.
+
+4. Xinu does not use virtual memory, as a design choice to make it as lightweight as possible.
+
+5. Memory paging is the division of virtual address space into pages, which are mapped to page frames in the
+physical memory of the operation system via use of a page table.
+
+6. Address translation is when the the virtual address spaces used by programs must be translated into physical
+addresses within the physical memory. Hardware makes this more effecient these days by caching these address
+translations. Special hardware must be utilized to most effeciently cache these translations.
+
